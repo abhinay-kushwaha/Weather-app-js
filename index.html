@@ -1,0 +1,86 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="flex flex-col gap-5 justify-start items-center p-10">
+    <input id="city" type="text" class="border-2 border-black rounded pl-1" placeholder="Enter your city name" />
+    <button class="bg-green-500 p-1 font-bold font-serif rounded-2xl w-32" onclick="weather()">Submit</button>
+
+    <div id="main"></div>
+
+    <div
+      style="
+        max-width: 100%;
+        list-style: none;
+        transition: none;
+        overflow: hidden;
+        width: 500px;
+        height: 500px;
+      "
+    >
+      <div
+        id="embedded-map-display"
+        style="height: 100%; width: 100%; max-width: 100%"
+      >
+        <iframe 
+        id="map"
+          style="height: 100%; width: 100%; border: 0"
+          frameborder="0"
+          
+        ></iframe>
+      </div>
+      <a
+        class="googlecoder"
+        href="https://www.bootstrapskins.com/themes"
+        id="authorize-maps-data"
+        >premium bootstrap themes</a
+      ><style>
+        #embedded-map-display img {
+          max-height: none;
+          max-width: none !important;
+          background: none !important;
+        }
+      </style>
+    </div>
+  </body>
+  <script>
+    let main = document.getElementById("main");
+    let api_key = "354eb454b4789681fb8261a4f4d95380";
+    let map = document.getElementById("map");
+
+    function weather() {
+        main.innerHTML = null
+      let city = document.getElementById("city").value;
+
+      //    console.log(city);
+      fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}&units=metric`
+      ).then((res) => {
+        let data = res.json();
+        data.then((abc) => {
+          //  console.log(abc);
+          display(abc);
+        });
+        // console.log(data);
+      });
+
+      function display(data) {
+        console.log(data);
+        let name = document.createElement("h1");
+        name.innerText = data.name;
+
+        let temp = document.createElement("h2");
+        temp.innerText =`Temp- ${data.main.temp}`;
+        let tempmax = document.createElement("h2");
+        tempmax.innerText = `Max-temp- ${data.main.temp_max}`;
+
+        map.src=`https://www.google.com/maps/embed/v1/place?q=${city}&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8`
+
+        main.append(name, temp, tempmax);
+      }
+    }
+  </script>
+</html>
